@@ -50,8 +50,6 @@ function menu() {
             console.log("Add departments")
             //run code
         }
-
     })
-
 }
 module.exports = menu;
