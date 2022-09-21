@@ -1,5 +1,9 @@
-const fs = require("fs")
 const inquirer = require("inquirer")
+const axios = require("axios")
+
+const getDepartments = async () => await axios.get('http://localhost:3000/api/departments');
+    
+    
 
 
 function menu() {
@@ -44,7 +48,8 @@ function menu() {
         }
         if (options.menu == "Veiw all departments") {
             console.log("Veiw all departments")
-            //run code
+            getDepartments().then((res) => {console.log(res.data)})
+        
         }
         if (options.menu == "Add departments") {
             console.log("Add departments")
