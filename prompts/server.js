@@ -1,6 +1,13 @@
 const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
+const first = require('./addEmployee')
+const last = require('./addEmployee')
+const role = require('./addEmployee')
+const manager = require('./addEmployee')
+
+
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -32,17 +39,20 @@ app.get('/api/departments', (req, res)=> {
 })
 
 app.get('/api/employee', (req, res)=> {
-  db.query('SELECT * FROM employee', function (err, results) {
+  
+})
+app.get('/api/roles', (req, res)=> {
+  db.query(`SELECT * FROM purpose`, function (err, results) {
   res.json({
-      employee: results
+      roles: results
     });
 
   })
 })
-app.get('/api/roles', (req, res)=> {
-  db.query('SELECT * FROM purpose', function (err, results) {
+app.post('/api/add_employee', (req, res)=> {
+  db.query(`INSERT INTO employee (first_name, last_name, manager_id, role_id, id) VALUES ("${first}", "${last}", ${manager}, ${role}, 7)`, function (err, results) {
   res.json({
-      roles: results
+      employee: results
     });
 
   })
