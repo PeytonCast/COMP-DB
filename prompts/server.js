@@ -24,15 +24,29 @@ const db = mysql.createConnection(
 //veiw all departments
 app.get('/api/departments', (req, res)=> {
   db.query('SELECT * FROM departments', function (err, results) {
-    res.json({
-      message: 'success',
-      data: results
+  res.json({
+      departments: results
     });
 
+  })
 })
+
+app.get('/api/employee', (req, res)=> {
+  db.query('SELECT * FROM employee', function (err, results) {
+  res.json({
+      employee: results
+    });
+
+  })
 })
-// db.query('SELECT * FROM departments', function (err, results) {
-  // console.log('results', results)})
+app.get('/api/roles', (req, res)=> {
+  db.query('SELECT * FROM purpose', function (err, results) {
+  res.json({
+      roles: results
+    });
+
+  })
+})
 
 
 app.listen(PORT, () => {
