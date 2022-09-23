@@ -94,7 +94,7 @@ function veiwAllEmployees() {
     })
 }
 function veiwAllRoles() {
-    db.promise().query('SELECT purpose.id, purpose.title, purpose.salary, departments.department_name, departments.id  FROM purpose LEFT JOIN departments ON purpose.department_id = departments.id;')
+    db.promise().query('SELECT purpose.id, purpose.title, purpose.salary, departments.department_name FROM purpose LEFT JOIN departments ON purpose.department_id = departments.id;')
     .then(([rows]) => {
         console.table(rows)
         menu()
