@@ -93,6 +93,50 @@ function veiwAllEmployees() {
         menu()
     })
 }
+
+function newRole() {
+    db.promise().query("SELECT * FROM departments;")
+    .then((res) => {
+        //builds an array of departments
+        let departments = res[0].map((department) => {
+            return {
+                value : department.id,
+                name : department.department_name
+            }
+
+        })
+        inquirer.prompt([
+            {
+                type : "input",
+                name : "title",
+                message : "Enter the new role's title"
+            },
+            {
+                type : "input",
+                name : "salary",
+                message : "Enter the new role's salary"
+            },
+            
+            {
+                type: "list",
+                name:"department",
+                message:"please select a department",
+                choices: departments
+            }
+        
+        ]).then((res) => {// validates prompts
+            db.promise().query(`INSERT INTO purpose (title, salary, department_id) VALUES ("${res.title}", "${res.salary}", ${res.department})`)
+        .then(() => {
+           veiwAllRoles()
+        })
+    
+        })
+
+
+    })
+}
+
+//gets all data on roles
 function veiwAllRoles() {
     db.promise().query('SELECT purpose.id, purpose.title, purpose.salary, departments.department_name FROM purpose LEFT JOIN departments ON purpose.department_id = departments.id;')
     .then(([rows]) => {
@@ -105,7 +149,7 @@ function veiwAllRoles() {
 function employeeByDepartment() {
     db.promise().query("SELECT * FROM departments;")
     .then((res) => {
-        
+        //builds an array of departments
         let departments = res[0].map((department) => {
             return {
                 value : department.id,
@@ -118,7 +162,7 @@ function employeeByDepartment() {
             name:"department",
             message:"please select a department",
             choices: departments
-    
+          // validates prompts
         }).then((res) => {
             db.promise().query(`SELECT purpose.department_id, departments.department_name, employee.first_name, employee.last_name, employee.id, employee.manager_id FROM employee LEFT JOIN purpose ON employee.role = purpose.id LEFT JOIN departments ON purpose.department_id = departments.id where departments.id = ${res.department};`)
         .then(([rows]) => {
@@ -133,15 +177,6 @@ function employeeByDepartment() {
     
 }
 
-//this is used in the update employee function
-function veiwEmployees() {
-    db.promise().query('SELECT * FROM employee')
-    .then(([rows]) => {
-        console.log('\n')
-        console.table(rows)
-    
-    })
-}
 
 //gets all data on departments
 function veiwAllDepartments(){
@@ -155,6 +190,15 @@ function veiwAllDepartments(){
 
 //adds a new employee to the data base 
 function newEmployee() {
+    db.promise().query("SELECT * FROM purpose;")
+    .then((res) => {
+        //builds an array of roles
+        let purpose = res[0].map((purpose) => {
+            return {
+               value : purpose.id,
+                name : purpose.title
+            }
+        })
     inquirer.prompt([
         {
             type: 'input',
@@ -169,24 +213,33 @@ function newEmployee() {
             
         },
         {
-            type: 'input',
-            message: `please enter employees role id`,
+            type: 'list',
+            message: `please select employee's role`,
             name: 'role',
+            choices: purpose,
             
         },
         {
             type: 'input',
-            message: `please enter employees manager id`,
+            message: `please enter employee's manager id`,
             name: 'manager',
             
         },
     ]).then((res) => {
-        db.promise().query(`INSERT INTO employee (first_name, last_name, manager_id, role) VALUES ("${res.first}", "${res.last}", ${res.manager}, ${res.role})`)
+        if (res.manager === ''){
+            //with no manager
+            db.promise().query(`INSERT INTO employee (first_name, last_name, role) VALUES ("${res.first}", "${res.last}", ${res.role})`)
+            .then((res) => {
+                veiwAllEmployees()}
+                )} else { //with a manager
+        db.promise().query(`INSERT INTO employee (first_name, last_name, role, manager_id) VALUES ("${res.first}", "${res.last}", ${res.role}, ${res.manager})`)
         .then((res) => {
             veiwAllEmployees()
-        })
+        })}
     })
-}
+})}
+
+
 //adds a new department to the data base 
 function newDepartment() {
     inquirer.prompt([
@@ -205,27 +258,52 @@ function newDepartment() {
 }
 
 
-//adds a new role to the data base 
+//changes the employee's role
 function updateEmployee() {
-    veiwEmployees()
+    db.promise().query("SELECT * FROM employee;")
+    .then((res) => {
+        // makes an array of data from employee
+        let employees = res[0].map((employee) => {
+            return {
+               value : employee.id,
+                name : employee.id
+
+            }
+
+        })
+        db.promise().query("SELECT * FROM purpose;")
+    .then((res) => {
+        // makes an array of data from purpose *note purpose is the eqivelent to roles
+        let purpose = res[0].map((purpose) => {
+            return {
+               value : purpose.id,
+                name : purpose.title
+            }
+
+        })
     inquirer.prompt([
         {
-            type: 'input',
+            type: 'list',
             message: `please enter the employee's id`,
-            name: 'id',     
+            name: 'id',
+            choices: employees
+            //using the arrays here 
         },
         {
-            type: 'input',
-            message: `please enter the the new role id`,
+            type: 'list',
+            message: `please enter the the new role`,
             name: 'role',
+            choices: purpose
+            //using the arrays here 
         }
     ]).then((res) => {
+        // validating the prompts
         db.promise().query(`UPDATE employee SET role = ${res.role} WHERE id = ${res.id}`)
         .then((res) => {
             veiwAllEmployees()
         })
     })
-}
+})})}
 
 menu()
 module.exports = menu
