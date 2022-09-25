@@ -4,7 +4,6 @@ const mysql = require('mysql2');
 // TODO 
 //add Update employee managers. +2
 //add View employees by manager. +2
-//add  BONUS. +2
 //add Delete departments +2
 //add Delete roles +2
 //add delete employee +2
@@ -29,8 +28,11 @@ function menu() {
             message: `Where would you like to go?`,
             name: 'menu',
             choices: [
+               "View All Managers",
+               "Add Manager",
+               "Update Manager BONUS +2",
                "View all employees",
-               "View employees by department BONUS",
+               "View employees by department BONUS +2",
                "Add an employee",
                "Update employee role",
                "Veiw all roles",
@@ -42,7 +44,21 @@ function menu() {
     ]).then((options) => 
     //validates prompts
     {
-       
+        if (options.menu == "View All Managers") {
+            console.log("\n ----View all employees---- \n")
+            veiwAllManagers()
+             
+        }
+        if (options.menu == "Add Manager") {
+            console.log("\n ----View all employees---- \n")
+            veiwAllEmployees()
+             
+        }      
+        if (options.menu == "Update Manager") {
+            console.log("\n ----View all employees---- \n")
+            veiwAllEmployees()
+             
+        }      
         if (options.menu == "View all employees") {
             console.log("\n ----View all employees---- \n")
             veiwAllEmployees()
@@ -82,6 +98,15 @@ function menu() {
             newDepartment()
             
         }
+    })
+}
+
+//gets all data on manager
+function veiwAllManagers() {
+    db.promise().query('SELECT * FROM manager;')
+    .then(([rows]) => {
+        console.table(rows)
+        menu()
     })
 }
 
