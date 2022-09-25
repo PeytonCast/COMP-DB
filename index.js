@@ -45,18 +45,18 @@ function menu() {
     //validates prompts
     {
         if (options.menu == "View All Managers") {
-            console.log("\n ----View all employees---- \n")
+            console.log("\n ----View all managers---- \n")
             veiwAllManagers()
              
         }
         if (options.menu == "Add Manager") {
-            console.log("\n ----View all employees---- \n")
+            console.log("\n ----add manager---- \n")
             addManager()
              
         }      
-        if (options.menu == "Update Manager") {
-            console.log("\n ----View all employees---- \n")
-            veiwAllEmployees()
+        if (options.menu == "Update Manager BONUS +2") {
+            console.log("\n ----update manager---- \n")
+            updateManager()
              
         }      
         if (options.menu == "View all employees") {
@@ -116,13 +116,11 @@ function addManager() {
             type: 'input',
             message: `please enter manager's first name`,
             name: 'first',
-            
         },
         {
             type: 'input',
             message: `please enter manager's last name`,
             name: 'last',
-            
         }
     ]).then((res) => {
         db.promise().query(`INSERT INTO manager (first_name, last_name) VALUES ("${res.first}", "${res.last}");`)
@@ -131,6 +129,49 @@ function addManager() {
         })
     })
 }
+
+function updateManager() {
+    db.promise().query("SELECT * FROM manager;")
+    .then((res) => {
+        // makes an array of data from employee
+        let manager = res[0].map((manager) => {
+        
+            return {
+               value : manager.id,
+                name : manager.id
+            }
+
+        })
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: `Please enter the manager's id`,
+            name: 'id',
+            choices: manager
+            //using the arrays here 
+        },
+        {
+            type: 'input',
+            message: `Edit first name`,
+            name: 'first'
+            
+        },
+        {
+            type: 'input',
+            message: `Edit last name`,
+            name: 'last'
+            
+        }
+    ]).then((res) => 
+    {
+        // validating the prompts
+        db.promise().query(`UPDATE manager SET first_name = "${res.first}", last_name = "${res.last}" WHERE id = ${res.id}`)
+        .then((res) => 
+        {
+            veiwAllManagers()
+        })
+    })
+})}
 
 //gets all data on employees
 function veiwAllEmployees() {
@@ -178,7 +219,6 @@ function newRole() {
         })
     
         })
-
 
     })
 }
