@@ -51,7 +51,7 @@ function menu() {
         }
         if (options.menu == "Add Manager") {
             console.log("\n ----View all employees---- \n")
-            veiwAllEmployees()
+            addManager()
              
         }      
         if (options.menu == "Update Manager") {
@@ -107,6 +107,28 @@ function veiwAllManagers() {
     .then(([rows]) => {
         console.table(rows)
         menu()
+    })
+}
+
+function addManager() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: `please enter manager's first name`,
+            name: 'first',
+            
+        },
+        {
+            type: 'input',
+            message: `please enter manager's last name`,
+            name: 'last',
+            
+        }
+    ]).then((res) => {
+        db.promise().query(`INSERT INTO manager (first_name, last_name) VALUES ("${res.first}", "${res.last}");`)
+        .then((res) => {
+            veiwAllManagers()
+        })
     })
 }
 
