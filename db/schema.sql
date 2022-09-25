@@ -22,6 +22,12 @@ CREATE TABLE purpose (
   REFERENCES departments(id)
   
 );
+
+CREATE TABLE manager (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL
+);
 -- employee table
 CREATE TABLE employee (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,5 +35,9 @@ CREATE TABLE employee (
     last_name VARCHAR(30) NOT NULL,
     manager_id INT DEFAULT NULL,
     role INT,
-    FOREIGN KEY (role) REFERENCES purpose(id)
+    FOREIGN KEY (role) REFERENCES purpose(id),
+    FOREIGN KEY (manager_id) REFERENCES manager(id)
 );
+
+
+

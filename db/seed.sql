@@ -12,11 +12,19 @@ VALUES (1, "Head Enngineer", 100.000, 1),
        (4, "Manager", 120.000, 2),
        (5, "TS man", 59.000, 4);
 
+INSERT INTO manager (id, first_name, last_name)
+VALUES (1, "Micha", "Miller"),
+       (2, "Dillean", "Letter"),
+       (3, "Susan", "Rachel");
+       
+
 INSERT INTO employee (id, first_name, last_name, manager_id, role)
 VALUES (1, "Bob", "Bobson", 1, 1),
        (2, "Rob", "Booth", 2, 2),
        (3, "Ribeca", "Rachel", 3, 4),
        (4, "Lloyd", "Likely", 2, 3),
        (5, "Karen", "Karen", 2, 5);
+
+
        
        
