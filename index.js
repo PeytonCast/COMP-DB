@@ -123,7 +123,7 @@ function addManager() {
             name: 'last',
         }
     ]).then((res) => {
-        db.promise().query(`INSERT INTO manager (first_name, last_name) VALUES ("${res.first}", "${res.last}");`)
+        db.promise().query(`INSERT INTO manager (Manager_first_name, Manager_last_name) VALUES ("${res.first}", "${res.last}");`)
         .then((res) => {
             veiwAllManagers()
         })
@@ -165,7 +165,7 @@ function updateManager() {
     ]).then((res) => 
     {
         // validating the prompts
-        db.promise().query(`UPDATE manager SET first_name = "${res.first}", last_name = "${res.last}" WHERE id = ${res.id}`)
+        db.promise().query(`UPDATE manager SET Manager_first_name = "${res.first}", Manager_last_name = "${res.last}" WHERE id = ${res.id}`)
         .then((res) => 
         {
             veiwAllManagers()
@@ -175,7 +175,7 @@ function updateManager() {
 
 //gets all data on employees
 function veiwAllEmployees() {
-    db.promise().query('SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, employee.role, purpose.title, purpose.salary, departments.department_name FROM employee JOIN purpose ON employee.role = purpose.id LEFT JOIN departments ON purpose.department_id = departments.id;')
+    db.promise().query('SELECT employee.id, employee.first_name, employee.last_name, employee.role, purpose.title, purpose.salary, departments.department_name, manager.Manager_first_name, manager.Manager_last_name FROM employee JOIN purpose ON employee.role = purpose.id JOIN departments ON purpose.department_id = departments.id LEFT JOIN manager ON employee.manager_id = manager.id;')
     .then(([rows]) => {
         console.table(rows)
         menu()

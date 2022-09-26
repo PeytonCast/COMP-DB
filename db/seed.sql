@@ -12,7 +12,7 @@ VALUES (1, "Head Enngineer", 100.000, 1),
        (4, "Manager", 120.000, 2),
        (5, "TS man", 59.000, 4);
 
-INSERT INTO manager (id, first_name, last_name)
+INSERT INTO manager (id, Manager_first_name, Manager_last_name)
 VALUES (1, "Micha", "Miller"),
        (2, "Dillean", "Letter"),
        (3, "Susan", "Rachel");

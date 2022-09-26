@@ -25,8 +25,8 @@ CREATE TABLE purpose (
 
 CREATE TABLE manager (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL
+    Manager_first_name VARCHAR(30) NOT NULL,
+    Manager_last_name VARCHAR(30) NOT NULL
 );
 -- employee table
 CREATE TABLE employee (
