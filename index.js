@@ -1,12 +1,6 @@
 const inquirer = require("inquirer")
 const mysql = require('mysql2');
 
-// TODO 
-//DONE Update employee managers. +2
-//DONE View employees by manager. +2
-//add Delete departments +2
-//add Delete roles +2
-//add delete employee +2
 const db = mysql.createConnection(
     {
       host: 'localhost',
