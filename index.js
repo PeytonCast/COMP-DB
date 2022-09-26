@@ -146,7 +146,7 @@ function deleteEmployee() {
     ]).then((res) => 
     {
         // validating the prompts
-        db.promise().query(`DELETE FROM employee WHERE id = ${res.id}`)
+        db.promise().query(`DELETE FROM employee WHERE id = ${res.id};`)
         .then((res) => 
         {
             veiwAllEmployees()
@@ -156,11 +156,67 @@ function deleteEmployee() {
 }
 
 function deleteDepartment() {
+    db.promise().query("SELECT * FROM departments;")
+    .then((res) => {
+        // makes an array of data from employee
+        let departments = res[0].map((department) => {
+        
+            return {
+               value : department.id,
+                name : department.id
+            }
 
+        })
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: `WARNING THIS WILL DELETE ALL EMPLOYEES AND ROLES UNDER DEPARTMENT. Please select the department's id to delete`,
+            name: 'id',
+            choices: departments
+            //using the arrays here 
+        }
+    ]).then((res) => 
+    {
+        // validating the prompts
+        db.promise().query(`DELETE FROM departments WHERE id = ${res.id}`)
+        .then((res) => 
+        {
+            veiwAllDepartments()
+        })
+    })
+})
 }
 
 function deleteRole()  {
+    db.promise().query("SELECT * FROM purpose;")
+    .then((res) => {
+        // makes an array of data from employee
+        let roles = res[0].map((role) => {
+        
+            return {
+               value : role.id,
+                name : role.id
+            }
 
+        })
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: `WARNING THIS WILL DELETE ALL EMPLOYEES UNDER roles. Please select the department's id to delete`,
+            name: 'id',
+            choices: roles
+            //using the arrays here 
+        }
+    ]).then((res) => 
+    {
+        // validating the prompts
+        db.promise().query(`DELETE FROM purpose WHERE id = ${res.id}`)
+        .then((res) => 
+        {
+            veiwAllRoles()
+        })
+    })
+})
 }
 
 //gets all data on manager
@@ -489,4 +545,3 @@ function updateEmployee() {
 })})}
 
 menu()
-module.exports = menu
