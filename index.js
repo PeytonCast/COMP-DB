@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 
 // TODO 
 //DONE Update employee managers. +2
-//add View employees by manager. +2
+//DONE View employees by manager. +2
 //add Delete departments +2
 //add Delete roles +2
 //add delete employee +2
@@ -39,12 +39,29 @@ function menu() {
                "Veiw all roles",
                "Add role",
                "Veiw all departments",
-               "Add departments"
+               "Add departments",
+               "Delete Employee BONUS +2",
+               "Delete Department BONUS +2",
+               "Delete Role BONUS +2"
              ] 
         }
     ]).then((options) => 
     //validates prompts
     {
+
+        if (options.menu == "Delete Employee BONUS +2") {
+            console.log("\n ----Delete Employee---- \n")
+            deleteEmployee()
+             
+        } if (options.menu == "Delete Department BONUS +2") {
+            console.log("\n ----Delete Department---- \n")
+            deleteDepartment()
+             
+        } if (options.menu == "Delete Role BONUS +2") {
+            console.log("\n ----Delete Role---- \n")
+            deleteRole()
+
+        }
         if (options.menu == "View All Managers") {
             console.log("\n ----View all managers---- \n")
             veiwAllManagers()
@@ -104,6 +121,46 @@ function menu() {
             
         }
     })
+}
+
+function deleteEmployee() {
+    db.promise().query("SELECT * FROM employee;")
+    .then((res) => {
+        // makes an array of data from employee
+        let employee = res[0].map((employees) => {
+        
+            return {
+               value : employees.id,
+                name : employees.id
+            }
+
+        })
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: `Please select the employee's id to delete`,
+            name: 'id',
+            choices: employee
+            //using the arrays here 
+        }
+    ]).then((res) => 
+    {
+        // validating the prompts
+        db.promise().query(`DELETE FROM employee WHERE id = ${res.id}`)
+        .then((res) => 
+        {
+            veiwAllEmployees()
+        })
+    })
+})
+}
+
+function deleteDepartment() {
+
+}
+
+function deleteRole()  {
+
 }
 
 //gets all data on manager
