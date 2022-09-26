@@ -2,7 +2,7 @@ const inquirer = require("inquirer")
 const mysql = require('mysql2');
 
 // TODO 
-//add Update employee managers. +2
+//DONE Update employee managers. +2
 //add View employees by manager. +2
 //add Delete departments +2
 //add Delete roles +2
@@ -31,6 +31,7 @@ function menu() {
                "View All Managers",
                "Add Manager",
                "Update Manager BONUS +2",
+               "View employees by manager BONUS +2",
                "View all employees",
                "View employees by department BONUS +2",
                "Add an employee",
@@ -64,7 +65,11 @@ function menu() {
             veiwAllEmployees()
              
         }
-        if (options.menu == "View employees by department BONUS") {
+        if (options.menu == "View employees by manager BONUS +2") {
+            console.log("\n ----Employees by department---- \n")
+            employeeByManager()
+        }
+        if (options.menu == "View employees by department BONUS +2") {
             console.log("\n ----Employees by department---- \n")
             employeeByDepartment()
              
@@ -110,6 +115,7 @@ function veiwAllManagers() {
     })
 }
 
+//adds a new manager to db
 function addManager() {
     inquirer.prompt([
         {
@@ -130,6 +136,7 @@ function addManager() {
     })
 }
 
+//bonus 
 function updateManager() {
     db.promise().query("SELECT * FROM manager;")
     .then((res) => {
@@ -182,6 +189,7 @@ function veiwAllEmployees() {
     })
 }
 
+//adds a new role to db
 function newRole() {
     db.promise().query("SELECT * FROM departments;")
     .then((res) => {
@@ -229,6 +237,37 @@ function veiwAllRoles() {
     .then(([rows]) => {
         console.table(rows)
         menu()
+    })
+}
+
+//bonus 
+function employeeByManager() {
+    db.promise().query("SELECT * FROM manager;")
+    .then((res) => {
+        //builds an array of departments
+        let managers = res[0].map((manager) => {
+            return {
+                value : manager.id,
+                name : manager.Managers_last_name
+            }
+
+        })
+        inquirer.prompt({
+            type: "list",
+            name:"manager",
+            message:"please select a manager",
+            choices: managers
+          // validates prompts
+        }).then((res) => {
+            db.promise().query(`SELECT manager.Manager_first_name, manager.Manager_last_name, employee.first_name, employee.last_name, employee.id FROM employee LEFT JOIN purpose ON employee.role = purpose.id LEFT JOIN manager ON employee.manager_id = manager.id where manager.id = ${res.manager};`)
+        .then(([rows]) => {
+            console.table(rows)
+            menu()
+        })
+    
+        })
+
+
     })
 }
 
