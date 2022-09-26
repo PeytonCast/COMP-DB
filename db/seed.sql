@@ -3,7 +3,7 @@ VALUES (1, "Engineering"),
        (2, "Managment"),
        (3, "HR"),
        (4, "Tech Support"),
-       (5, "Assasians Guild");
+       (5, "Sales");
        
 INSERT INTO purpose (id, title, salary, department_id)
 VALUES (1, "Head Enngineer", 100.000, 1),
@@ -19,8 +19,8 @@ VALUES (1, "Micha", "Miller"),
        
 
 INSERT INTO employee (id, first_name, last_name, manager_id, role)
-VALUES (1, "Bob", "Bobson", 1, 1),
-       (2, "Rob", "Booth", 2, 2),
+VALUES (1, "Bob", "Bobson", 1, 5),
+       (2, "Rob", "Booth", 2, 1),
        (3, "Ribeca", "Rachel", 3, 4),
        (4, "Lloyd", "Likely", 2, 3),
        (5, "Karen", "Karen", 2, 5);
